@@ -6,10 +6,12 @@ import java.awt.Font;
  */
 public class FinalFrame extends JFrame {
     JTextField[] txt_fields = new JTextField[4];
+    JLabel[] txt_labels = new JLabel[4];
     JTextField[] txt_term_fields = new JTextField[5];
-    String[] choices = {"1", "2", "3", "4", "5"};
+    JLabel[] txt_term_labels = new JLabel[5];
     int numberOfTerms = 1;
     JComboBox<String> numOfTrms = null;
+    String[] choices = {"1", "2", "3", "4", "5"};
 
     public FinalFrame() {
         // FRAME SETUP -----------------------------------------
@@ -21,6 +23,8 @@ public class FinalFrame extends JFrame {
         setResizable(false);
         //------------------------------------------------------
         numOfTrms = new JComboBox<String>(choices);
+
+        // LABELS & TEXTFIELDS -------------------------------------------------
         for (int i = 0; i < txt_fields.length; i++) {
             if (i != 2) {
                 if (i == 0) {
@@ -41,6 +45,22 @@ public class FinalFrame extends JFrame {
                 }
             }
         }
+        for (int i = 0; i < txt_labels.length; i++) {
+            if (i == 0) {
+                txt_labels[i] = new JLabel("Total Term Weight:");
+            } else if (i == 1) {
+                txt_labels[i] = new JLabel("Final Weight:");
+            } else if (i == 2) {
+                txt_labels[i] = new JLabel("Number of Terms:");
+            } else if (i == 3) {
+                txt_labels[i] = new JLabel("Grade Wanted:");
+            }
+            txt_labels[i].setBounds(20, (i * 50) + 10, 200, 40);
+            txt_labels[i].setFont(new Font("Times New Roman", Font.PLAIN, 25));
+            add(txt_labels[i]);
+        } // -------------------------------------------------------------------
+
+        // TERM LABELS & TEXTFIELDS --------------------------------------------
 
         for (int i = 0; i < txt_term_fields.length; i++) {
             txt_term_fields[i] = new JTextField("");
@@ -48,9 +68,26 @@ public class FinalFrame extends JFrame {
             txt_term_fields[i].setFont(new Font("Times New Roman", Font.PLAIN, 25));
             add(txt_term_fields[i]);
         }
+        for (int i = 0; i < txt_term_labels.length; i++) {
+            if (i == 0) {
+                txt_term_labels[i] = new JLabel("Term 1 Grade:");
+            } else if (i == 1) {
+                txt_term_labels[i] = new JLabel("Term 2 Grade:");
+            } else if (i == 2) {
+                txt_term_labels[i] = new JLabel("Term 3 Grade:");
+            } else if (i == 3) {
+                txt_term_labels[i] = new JLabel("Term 4 Grade:");
+            } else if (i == 4) {
+                txt_term_labels[i] = new JLabel("Term 5 Grade:");
+            }
+            txt_term_labels[i].setBounds(20, (i * 50) + 230, 200, 40);
+            txt_term_labels[i].setFont(new Font("Times New Roman", Font.PLAIN, 25));
+            add(txt_term_labels[i]);
+        } // -------------------------------------------------------------------
 
         for (int i = 5; i > 1; i--) {
             txt_term_fields[i - 1].setEnabled(false);
+            txt_term_labels[i - 1].setEnabled(false);
         }
 
         numOfTrms.setFont(new Font("Times New Roman", Font.PLAIN, 25));
@@ -73,6 +110,23 @@ public class FinalFrame extends JFrame {
                     txt_term_fields[1].setEnabled(true);
                 case 1:
                     txt_term_fields[0].setEnabled(true);
+
+            }
+
+            for (int i = 0; i < 5; i++) {
+                txt_term_labels[i].setEnabled(false);
+            }
+            switch (Integer.parseInt(numOfTrms.getSelectedItem().toString())) {
+                case 5:
+                    txt_term_labels[4].setEnabled(true);
+                case 4:
+                    txt_term_labels[3].setEnabled(true);
+                case 3:
+                    txt_term_labels[2].setEnabled(true);
+                case 2:
+                    txt_term_labels[1].setEnabled(true);
+                case 1:
+                    txt_term_labels[0].setEnabled(true);
 
             }
         });
