@@ -9,7 +9,13 @@ public class FinalFrame extends JFrame {
     JLabel[] txt_labels = new JLabel[4];
     JTextField[] txt_term_fields = new JTextField[5];
     JLabel[] txt_term_labels = new JLabel[5];
+
+    JButton equal = new JButton("Calculate");
+    JButton clear = new JButton("Clear");
+
     int numberOfTerms = 1;
+    double average = 0;
+
     JComboBox<String> numOfTrms = null;
     String[] choices = {"1", "2", "3", "4", "5"};
 
@@ -93,6 +99,16 @@ public class FinalFrame extends JFrame {
         numOfTrms.setFont(new Font("Times New Roman", Font.PLAIN, 25));
         numOfTrms.setBounds(225, 110, 200, 40);
         add(numOfTrms);
+
+
+        equal.setFont(new Font("Times New Roman", Font.PLAIN, 25));
+        equal.setBounds(20, 480, 190, 40);
+        add(equal);
+
+        clear.setFont(new Font("Times New Roman", Font.PLAIN, 25));
+        clear.setBounds(230, 480, 190, 40);
+        add(clear);
+
         setVisible(true);
 
         numOfTrms.addActionListener(e -> {
@@ -110,7 +126,6 @@ public class FinalFrame extends JFrame {
                     txt_term_fields[1].setEnabled(true);
                 case 1:
                     txt_term_fields[0].setEnabled(true);
-
             }
 
             for (int i = 0; i < 5; i++) {
@@ -127,8 +142,18 @@ public class FinalFrame extends JFrame {
                     txt_term_labels[1].setEnabled(true);
                 case 1:
                     txt_term_labels[0].setEnabled(true);
-
             }
         });
+
+        equal.addActionListener(e -> {
+            for (int i = 0; i < numberOfTerms; i++) {
+                if(!txt_term_fields[i].getText().equals("")) {
+                    average += Double.parseDouble(txt_term_fields[i].getText());
+                }
+            }
+            average /= numberOfTerms;
+            System.out.println(average);
+        });
+        average = 0;
     }
 }
