@@ -6,15 +6,23 @@ import java.awt.Font;
  */
 public class FinalFrame extends JFrame {
     JTextField[] txt_fields = new JTextField[4];
-    JLabel[] txt_labels = new JLabel[4];
+    JLabel[] txt_labels = new JLabel[5];
     JTextField[] txt_term_fields = new JTextField[5];
     JLabel[] txt_term_labels = new JLabel[5];
 
     JButton equal = new JButton("Calculate");
     JButton clear = new JButton("Clear");
 
-    int numberOfTerms = 1;
+    JLabel gradeNeeded
+
+    int numberOfTerms = 0;
     double average = 0;
+
+    double gradeWanted = 0;
+
+    double trmWeight = 0;
+    double finalWeight = 0;
+    double gradeNeeded = 0;
 
     JComboBox<String> numOfTrms = null;
     String[] choices = {"1", "2", "3", "4", "5"};
@@ -36,17 +44,17 @@ public class FinalFrame extends JFrame {
                 if (i == 0) {
                     txt_fields[i] = new JTextField("85");
                     txt_fields[i].setBounds(225, (i * 50) + 10, 200, 40);
-                    txt_fields[i].setFont(new Font("Times New Roman", Font.PLAIN, 25));
+                    txt_fields[i].setFont(new Font("Comic Sans MS", Font.BOLD, 25));
                     add(txt_fields[i]);
                 } else if (i == 1) {
                     txt_fields[i] = new JTextField("15");
                     txt_fields[i].setBounds(225, (i * 50) + 10, 200, 40);
-                    txt_fields[i].setFont(new Font("Times New Roman", Font.PLAIN, 25));
+                    txt_fields[i].setFont(new Font("Comic Sans MS", Font.BOLD, 25));
                     add(txt_fields[i]);
                 } else if (i == 3) {
                     txt_fields[i] = new JTextField("90");
                     txt_fields[i].setBounds(225, (i * 50) + 10, 200, 40);
-                    txt_fields[i].setFont(new Font("Times New Roman", Font.PLAIN, 25));
+                    txt_fields[i].setFont(new Font("Comic Sans MS", Font.BOLD, 25));
                     add(txt_fields[i]);
                 }
             }
@@ -60,10 +68,17 @@ public class FinalFrame extends JFrame {
                 txt_labels[i] = new JLabel("Number of Terms:");
             } else if (i == 3) {
                 txt_labels[i] = new JLabel("Grade Wanted:");
+            } else if (i==4) {
+                txt_labels[i] = new JLabel("Calculate Grade Required On Final");
+                txt_labels[i].setBounds(20, 600, 200, 40);
+                txt_labels[i].setFont(new Font("Comic Sans MS", Font.PLAIN, 18));
+                add(txt_labels[i]);
             }
-            txt_labels[i].setBounds(20, (i * 50) + 10, 200, 40);
-            txt_labels[i].setFont(new Font("Times New Roman", Font.PLAIN, 25));
-            add(txt_labels[i]);
+            if (i!=4) {
+                txt_labels[i].setBounds(20, (i * 50) + 10, 200, 40);
+                txt_labels[i].setFont(new Font("Comic Sans MS", Font.PLAIN, 21));
+                add(txt_labels[i]);
+            }
         } // -------------------------------------------------------------------
 
         // TERM LABELS & TEXTFIELDS --------------------------------------------
@@ -71,7 +86,7 @@ public class FinalFrame extends JFrame {
         for (int i = 0; i < txt_term_fields.length; i++) {
             txt_term_fields[i] = new JTextField("");
             txt_term_fields[i].setBounds(225, (i * 50) + 230, 200, 40);
-            txt_term_fields[i].setFont(new Font("Times New Roman", Font.PLAIN, 25));
+            txt_term_fields[i].setFont(new Font("Comic Sans MS", Font.BOLD, 25));
             add(txt_term_fields[i]);
         }
         for (int i = 0; i < txt_term_labels.length; i++) {
@@ -87,7 +102,7 @@ public class FinalFrame extends JFrame {
                 txt_term_labels[i] = new JLabel("Term 5 Grade:");
             }
             txt_term_labels[i].setBounds(20, (i * 50) + 230, 200, 40);
-            txt_term_labels[i].setFont(new Font("Times New Roman", Font.PLAIN, 25));
+            txt_term_labels[i].setFont(new Font("Comic Sans MS", Font.PLAIN, 25));
             add(txt_term_labels[i]);
         } // -------------------------------------------------------------------
 
@@ -96,16 +111,15 @@ public class FinalFrame extends JFrame {
             txt_term_labels[i - 1].setEnabled(false);
         }
 
-        numOfTrms.setFont(new Font("Times New Roman", Font.PLAIN, 25));
+        numOfTrms.setFont(new Font("Comic Sans MS", Font.BOLD, 25));
         numOfTrms.setBounds(225, 110, 200, 40);
         add(numOfTrms);
 
-
-        equal.setFont(new Font("Times New Roman", Font.PLAIN, 25));
+        equal.setFont(new Font("Comic Sans MS", Font.BOLD, 25));
         equal.setBounds(20, 480, 190, 40);
         add(equal);
 
-        clear.setFont(new Font("Times New Roman", Font.PLAIN, 25));
+        clear.setFont(new Font("Comic Sans MS", Font.BOLD, 25));
         clear.setBounds(230, 480, 190, 40);
         add(clear);
 
@@ -143,17 +157,34 @@ public class FinalFrame extends JFrame {
                 case 1:
                     txt_term_labels[0].setEnabled(true);
             }
+
+            for (int i = 0; i < 5; i++) {
+                if (txt_term_fields[i].isEnabled()) {
+                    numberOfTerms++;
+                }
+            }
         });
 
         equal.addActionListener(e -> {
+            trmWeight = Double.parseDouble(txt_fields[0].getText());
+            finalWeight = Double.parseDouble(txt_fields[1].getText());
+            gradeWanted = Double.parseDouble(txt_fields[3].getText());
+            average = 0;
             for (int i = 0; i < numberOfTerms; i++) {
-                if(!txt_term_fields[i].getText().equals("")) {
+                if (!txt_term_fields[i].getText().equals("")) {
                     average += Double.parseDouble(txt_term_fields[i].getText());
                 }
             }
             average /= numberOfTerms;
-            System.out.println(average);
+            gradeNeeded = (average * trmWeight) + (gradeWanted * finalWeight);
         });
-        average = 0;
+
+        clear.addActionListener(e -> clear());
+    }
+
+    public void clear() {
+        for (int i = 0; i < txt_term_fields.length; i++) {
+            txt_term_fields[i].setText("");
+        }
     }
 }
