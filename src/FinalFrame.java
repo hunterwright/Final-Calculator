@@ -13,9 +13,9 @@ public class FinalFrame extends JFrame {
     JButton equal = new JButton("Calculate");
     JButton clear = new JButton("Clear");
 
-    JLabel gradeNeeded
+    JLabel txt_gradeNeeded = new JLabel("");
 
-    int numberOfTerms = 0;
+    int numberOfTerms = 1;
     double average = 0;
 
     double gradeWanted = 0;
@@ -68,13 +68,13 @@ public class FinalFrame extends JFrame {
                 txt_labels[i] = new JLabel("Number of Terms:");
             } else if (i == 3) {
                 txt_labels[i] = new JLabel("Grade Wanted:");
-            } else if (i==4) {
-                txt_labels[i] = new JLabel("Calculate Grade Required On Final");
-                txt_labels[i].setBounds(20, 600, 200, 40);
-                txt_labels[i].setFont(new Font("Comic Sans MS", Font.PLAIN, 18));
+            } else if (i == 4) {
+                txt_labels[i] = new JLabel("Calculate Grade Required On Final: ");
+                txt_labels[i].setBounds(20, 527, 500, 40);
+                txt_labels[i].setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
                 add(txt_labels[i]);
             }
-            if (i!=4) {
+            if (i != 4) {
                 txt_labels[i].setBounds(20, (i * 50) + 10, 200, 40);
                 txt_labels[i].setFont(new Font("Comic Sans MS", Font.PLAIN, 21));
                 add(txt_labels[i]);
@@ -158,7 +158,7 @@ public class FinalFrame extends JFrame {
                     txt_term_labels[0].setEnabled(true);
             }
 
-            for (int i = 0; i < 5; i++) {
+            for (int i = 1; i < 5; i++) {
                 if (txt_term_fields[i].isEnabled()) {
                     numberOfTerms++;
                 }
@@ -166,8 +166,12 @@ public class FinalFrame extends JFrame {
         });
 
         equal.addActionListener(e -> {
+            txt_gradeNeeded.setText("");
+
             trmWeight = Double.parseDouble(txt_fields[0].getText());
+            trmWeight /= 100;
             finalWeight = Double.parseDouble(txt_fields[1].getText());
+            finalWeight /= 100;
             gradeWanted = Double.parseDouble(txt_fields[3].getText());
             average = 0;
             for (int i = 0; i < numberOfTerms; i++) {
@@ -176,7 +180,18 @@ public class FinalFrame extends JFrame {
                 }
             }
             average /= numberOfTerms;
-            gradeNeeded = (average * trmWeight) + (gradeWanted * finalWeight);
+
+            gradeNeeded = (-(average * trmWeight) + (gradeWanted)) / finalWeight;
+
+            String s = "" + gradeNeeded + "";
+            s = s.format("%.5f", gradeNeeded);
+
+            txt_gradeNeeded.setText(s);
+            txt_gradeNeeded.setBounds(300, 527, 150, 40);
+            txt_gradeNeeded.setFont(new Font("Comic Sans MS", Font.BOLD, 25));
+            add(txt_gradeNeeded);
+
+            repaint();
         });
 
         clear.addActionListener(e -> clear());
