@@ -29,7 +29,7 @@ public class FinalFrame extends JFrame {
 
     public FinalFrame() {
         // FRAME SETUP -----------------------------------------
-        super("Simple Calculator");
+        super("Final Calculator");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(450, 600);
         setLayout(null);
